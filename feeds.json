@@ -1,0 +1,15 @@
+{
+	"zeit": 		"http://newsfeed.zeit.de/index",
+	"heise":		"https://www.heise.de/newsticker/heise-atom.xml",
+	"tagesschau":		"http://www.tagesschau.de/xml/rss2",
+	"faz":			"http://www.faz.net/rss/aktuell/",
+	"spiegel":		"http://www.spiegel.de/schlagzeilen/index.rss",
+	"netzpolitik":		"https://netzpolitik.org/feed/",
+	"taz":			"http://www.taz.de/!p4608;rss/",
+	"neues deutschland":	"https://www.neues-deutschland.de/rss/neues-deutschland.xml",
+	"sueddeutsche":		"http://rss.sueddeutsche.de/app/service/rss/alles/index.rss?output=rss",
+	"linke":		"https://linkezeitung.de/feed/",
+	"hessenschau":		"http://hessenschau.de/index.rss",
+	"neuepresse":		"http://www.neuepresse.de/rss/feed/np_schlagzeilen",
+	"focus":		"http://rss.focus.de/fol/XML/rss_folnews.xml"
+}
