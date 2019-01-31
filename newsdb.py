@@ -1,6 +1,7 @@
 import feedparser
 import json
 from urllib.request import urlopen
+from urllib.error import URLError
 import sqlite3
 from calendar import timegm
 from random import choice
@@ -27,10 +28,10 @@ class NewsDB:
 							page = response.read().decode("utf-8")
 							unix_time = timegm(item.published_parsed)
 							self.add(source, item.link, unix_time, page)
-						except Exception as e:
-							raise e
-			except Exception as e:
-				raise e
+						except URLError:
+							print("Failed to download {}".format(item.link))
+			except URLError:
+				print("Failed to download {}".format(url))
 	def add(self, source, link, date, content):
 		"""add an article to the db
 		the article is marked as unseen and unscored"""
