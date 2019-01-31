@@ -7,7 +7,7 @@ classes = ["schlecht", "eher schlecht", "eher gut", "gut"]
 
 def main():
 	with NewsDB() as db:
-		#db.update()
+		db.update()
 
 		while True:
 			show_random_and_ask(db)
