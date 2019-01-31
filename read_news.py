@@ -10,7 +10,7 @@ def main():
 		db.update()
 
 		while True:
-			show_random_and_ask(db)
+			rate_random(db)
 
 def ask():
 	print("Wie findest du den Artikel?")
@@ -28,7 +28,7 @@ def ask():
 			print("Unpassende Antwort")
 			continue
 
-def show_random_and_ask(db):
+def rate_random(db):
 	source, link = db.random_unseen()
 
 	print(link)
