@@ -13,8 +13,8 @@ class NewsDB:
 	def update(self):
 		"""fetch new news from the feeds"""
 		for source, url in self.feeds.items():
-			#get the id of already downloaded news
-			done = self.conn.execute("SELECT id FROM news WHERE source=?", (source,))
+			#get already downloaded news
+			done = self.conn.execute("SELECT link FROM news WHERE source=?", (source,))
 			done = {each[0] for each in done}
 
 			try:
@@ -31,18 +31,18 @@ class NewsDB:
 							raise e
 			except Exception as e:
 				raise e
-	def add(self, source, id, date, content):
+	def add(self, source, link, date, content):
 		"""add an article to the db
 		the article is marked as unseen"""
 		with self.conn:
-			self.conn.execute("INSERT INTO news(source, id, date, seen, page) VALUES(?, ?, ?, ?, ?)", (source, id, date, 0, content))
+			self.conn.execute("INSERT INTO news(source, link, date, seen, page) VALUES(?, ?, ?, ?, ?)", (source, link, date, 0, content))
 	def __enter__(self):
 		self.conn = sqlite3.connect(self.db_filename)
 		with self.conn:
 			self.conn.execute("""
 				CREATE TABLE IF NOT EXISTS news (
 					source	TEXT	NOT NULL,
-					id	TEXT	NOT NULL,
+					link	TEXT	NOT NULL,
 					date	INTEGER	NOT NULL,
 					seen	INTEGER	NOT NULL,
 					page	TEXT	NOT NULL
@@ -55,5 +55,5 @@ class NewsDB:
 		self.conn.close()
 	def random_unseen(self):
 		"""return the source and the link of a random unseen article"""
-		news = list(self.conn.execute("SELECT source, id FROM news WHERE seen=0"))
+		news = list(self.conn.execute("SELECT source, link FROM news WHERE seen=0"))
 		return choice(news)
