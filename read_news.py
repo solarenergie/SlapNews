@@ -29,11 +29,13 @@ def ask():
 			continue
 
 def show_random_and_ask(db):
-	_, link = db.random_unseen()
+	source, link = db.random_unseen()
 
 	print(link)
 
-	ask()
+	score = ask()
+
+	db.add_score(source, link, score)
 
 if __name__ == "__main__":
 	main()

@@ -33,9 +33,9 @@ class NewsDB:
 				raise e
 	def add(self, source, link, date, content):
 		"""add an article to the db
-		the article is marked as unseen"""
+		the article is marked as unseen and unscored"""
 		with self.conn:
-			self.conn.execute("INSERT INTO news(source, link, date, seen, page) VALUES(?, ?, ?, ?, ?)", (source, link, date, 0, content))
+			self.conn.execute("INSERT INTO news(source, link, date, seen, score, page) VALUES(?, ?, ?, ?, ?, ?)", (source, link, date, 0, -1, content))
 	def __enter__(self):
 		self.conn = sqlite3.connect(self.db_filename)
 		with self.conn:
@@ -45,6 +45,7 @@ class NewsDB:
 					link	TEXT	NOT NULL,
 					date	INTEGER	NOT NULL,
 					seen	INTEGER	NOT NULL,
+					score	INTEGER NOT NULL,
 					page	TEXT	NOT NULL
 				)
 			""")
@@ -57,3 +58,6 @@ class NewsDB:
 		"""return the source and the link of a random unseen article"""
 		news = list(self.conn.execute("SELECT source, link FROM news WHERE seen=0"))
 		return choice(news)
+	def add_score(self, source, link, score):
+		with self.conn:
+			self.conn.execute("UPDATE news SET score = ? WHERE source = ? AND link = ?", (score, source, link))
