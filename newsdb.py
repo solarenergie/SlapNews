@@ -61,3 +61,17 @@ class NewsDB:
 	def add_score(self, source, link, score):
 		with self.conn:
 			self.conn.execute("UPDATE news SET score = ? WHERE source = ? AND link = ?", (score, source, link))
+	def unscored(self):
+		"""return a list of all unscored articles as dictionary"""
+		unscored = self.conn.execute("SELECT source, link, page FROM news WHERE score = -1")
+		return list(map(lambda article: {"source": article[0], "link": article[1], "page": article[2]}, unscored))
+	def scored(self):
+		"""return a list of all scored articles as dictionary"""
+		scored = self.conn.execute("SELECT source, link, score, page FROM news WHERE score != -1")
+		return list(map(lambda article: {"source": article[0], "link": article[1], "score": article[2], "page": article[3]}, scored))
+	def hasNoScoredArticles(self):
+		"""return true if there is no scored article in the database"""
+		if len(self.scored()) == 0:
+			return True
+		else:
+			return False

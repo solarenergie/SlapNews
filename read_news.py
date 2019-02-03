@@ -2,15 +2,37 @@
 # -*- encoding: utf-8 -*-
 from newsdb import NewsDB
 from random import shuffle
+from ai import Pipeline1
 
 classes = ["schlecht", "eher schlecht", "eher gut", "gut"]
 
 def main():
+	Ranker = Pipeline1()
+
 	with NewsDB() as db:
 		db.update()
 
-		while True:
+		if db.hasNoScoredArticles():
 			rate_random(db)
+
+		train(db, Ranker)
+
+		while True:
+			unseen = db.unscored()
+			content = map(lambda x: x['page'], unseen)
+			idx = Ranker.transform(content)
+			for i in idx:
+				print(unseen[i]["link"])
+
+				score = ask()
+
+				db.add_score(unseen[i]["source"], unseen[i]["link"], score)
+
+def train(db, Ranker):
+	news = db.scored()
+	contents = tuple(map(lambda x: x['page'], news))
+	scores = tuple(map(lambda x: x['score'], news))
+	Ranker.fit(contents, scores)
 
 def ask():
 	print("Wie findest du den Artikel?")
