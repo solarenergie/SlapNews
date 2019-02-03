@@ -29,7 +29,7 @@ def ask():
 			continue
 
 def rate_random(db):
-	source, link = db.random_unseen()
+	source, link = db.random_unscored()
 
 	print(link)
 

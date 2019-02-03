@@ -36,7 +36,7 @@ class NewsDB:
 		"""add an article to the db
 		the article is marked as unseen and unscored"""
 		with self.conn:
-			self.conn.execute("INSERT INTO news(source, link, date, seen, score, page) VALUES(?, ?, ?, ?, ?, ?)", (source, link, date, 0, -1, content))
+			self.conn.execute("INSERT INTO news(source, link, date, score, page) VALUES(?, ?, ?, ?, ?)", (source, link, date, -1, content))
 	def __enter__(self):
 		self.conn = sqlite3.connect(self.db_filename)
 		with self.conn:
@@ -45,7 +45,6 @@ class NewsDB:
 					source	TEXT	NOT NULL,
 					link	TEXT	NOT NULL,
 					date	INTEGER	NOT NULL,
-					seen	INTEGER	NOT NULL,
 					score	INTEGER NOT NULL,
 					page	TEXT	NOT NULL
 				)
@@ -55,9 +54,9 @@ class NewsDB:
 	def __exit__(self, exc_type, exc_value, traceback):
 		self.conn.commit()
 		self.conn.close()
-	def random_unseen(self):
+	def random_unscored(self):
 		"""return the source and the link of a random unseen article"""
-		news = list(self.conn.execute("SELECT source, link FROM news WHERE seen=0"))
+		news = list(self.conn.execute("SELECT source, link FROM news WHERE score = -1"))
 		return choice(news)
 	def add_score(self, source, link, score):
 		with self.conn:
