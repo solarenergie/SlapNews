@@ -7,7 +7,7 @@ from calendar import timegm
 from random import choice
 
 class NewsDB:
-	def __init__(self, feeds_filename="feeds.json", db_filename="news.db"):
+	def __init__(self, feeds_filename, db_filename):
 		self.db_filename = db_filename
 		with open(feeds_filename) as f:
 			self.feeds = json.load(f)
