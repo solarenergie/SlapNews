@@ -30,6 +30,8 @@ class NewsDB:
 							self.add(source, item.link, unix_time, page)
 						except URLError:
 							print("Failed to download {}".format(item.link))
+						except Exception as e:
+							print("Exception: {} at url: {}".format(str(e), item.link))
 			except URLError:
 				print("Failed to download {}".format(url))
 	def add(self, source, link, date, content):
