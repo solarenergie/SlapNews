@@ -16,7 +16,7 @@ class SimpleRanking(sklearn.base.TransformerMixin):
 		indexed = list(zip(X, range(len(X))))
 
 		#sort the articles
-		ranked = sorted(indexed, key=lambda x: x[0][-1])
+		ranked = sorted(indexed, key=lambda x: x[0][-1], reverse=True)
 
 		#return the index of the
 		return [idx for x, idx in ranked]
